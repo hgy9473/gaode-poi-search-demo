@@ -23,19 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InputTipsActivity extends Activity implements SearchView.OnQueryTextListener, Inputtips.InputtipsListener, OnItemClickListener, View.OnClickListener {
-    private SearchView mSearchView;// 输入搜索关键字
-    private ImageView mBack;
-    private ListView mInputListView;
-    private List<Tip> mCurrentTipList;
-    private InputTipsAdapter mIntipAdapter;
+    private SearchView mSearchView;// 搜索输入框
+    private ImageView mBack; // 返回键
+    private ListView mInputListView; // 提示列表
+    private List<Tip> mCurrentTipList; // 提示列表数据
+    private InputTipsAdapter mIntipAdapter; // 列表适配器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_tips);
+
         initSearchView();
+
         mInputListView = (ListView) findViewById(R.id.inputtip_list);
         mInputListView.setOnItemClickListener(this);
+
         mBack = (ImageView) findViewById(R.id.back);
         mBack.setOnClickListener(this);
     }
@@ -43,6 +46,7 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
     private void initSearchView() {
         mSearchView = (SearchView) findViewById(R.id.keyWord);
         mSearchView.setOnQueryTextListener(this);
+
         //设置SearchView默认为展开显示
         mSearchView.setIconified(false);
         mSearchView.onActionViewExpanded();
@@ -123,6 +127,7 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
         return false;
     }
 
+    // 返回按钮单击事件
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.back) {

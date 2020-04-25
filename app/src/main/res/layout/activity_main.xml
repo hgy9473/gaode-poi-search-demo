@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<!--    地图控件 -->
     <fragment
         android:id="@+id/map"
         class="com.amap.api.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
+<!-- 搜索框 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -19,6 +20,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/white">
 
+<!--        清除按钮-->
         <ImageView
             android:id="@+id/clean_keywords"
             android:layout_width="wrap_content"
@@ -29,6 +31,7 @@
             android:visibility="gone"
             />
 
+<!--        输入框 -->
         <TextView
             android:id="@+id/main_keywords"
             android:layout_width="match_parent"
