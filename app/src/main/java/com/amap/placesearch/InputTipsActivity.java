@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -62,7 +63,18 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
      */
     @Override
     public void onGetInputtips(List<Tip> tipList, int rCode) {
+        Log.d("hgy", "onGetInputtips: tipList=" + tipList.size()+ "," + tipList);
+
         if (rCode == 1000) {// 正确返回
+            boolean hasSnippet = true;
+            while(hasSnippet){
+                if(tipList.get(0).getPoint() == null){
+                    tipList.remove(0);
+                }else{
+                    hasSnippet = false;
+                }
+            }
+            Log.d("hgy", "onGetInputtips: tipList=" + tipList.size()+ "," + tipList);
             mCurrentTipList = tipList;
             List<String> listString = new ArrayList<String>();
             for (int i = 0; i < tipList.size(); i++) {
@@ -98,10 +110,6 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
      */
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Intent intent = new Intent();
-        intent.putExtra(Constants.KEY_WORDS_NAME, query);
-        setResult(MainActivity.RESULT_CODE_KEYWORDS, intent);
-        this.finish();
         return false;
     }
 

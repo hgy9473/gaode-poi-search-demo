@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ import com.amap.placesearch.util.Constants;
 import com.amap.placesearch.util.ToastUtil;
 
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 
 public class MainActivity extends FragmentActivity implements
         OnMarkerClickListener, InfoWindowAdapter,
@@ -48,7 +50,6 @@ public class MainActivity extends FragmentActivity implements
 
     public static final int REQUEST_CODE = 100;
     public static final int RESULT_CODE_INPUTTIPS = 101;
-    public static final int RESULT_CODE_KEYWORDS = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,23 +222,11 @@ public class MainActivity extends FragmentActivity implements
                 != null) {
             mAMap.clear();
             Tip tip = data.getParcelableExtra(Constants.EXTRA_TIP);
-            if (tip.getPoiID() == null || tip.getPoiID().equals("")) {
-                doSearchQuery(tip.getName());
-            } else {
-                addTipMarker(tip);
-            }
+
+            Log.d("hgy", "onActivityResult: RESULT_CODE_INPUTTIPS->" + Constants.EXTRA_TIP +"->"+ tip.toString() + "," + tip.getName() +"，poiID=" + tip.getPoiID());
+            addTipMarker(tip);
             mKeywordsTextView.setText(tip.getName());
             if(!tip.getName().equals("")){
-                mCleanKeyWords.setVisibility(View.VISIBLE);
-            }
-        } else if (resultCode == RESULT_CODE_KEYWORDS && data != null) {
-            mAMap.clear();
-            String keywords = data.getStringExtra(Constants.KEY_WORDS_NAME);
-            if(keywords != null && !keywords.equals("")){
-                doSearchQuery(keywords);
-            }
-            mKeywordsTextView.setText(keywords);
-            if(!keywords.equals("")){
                 mCleanKeyWords.setVisibility(View.VISIBLE);
             }
         }
