@@ -5,11 +5,11 @@
     android:orientation="vertical">
 
 <!--    地图控件 -->
-    <fragment
+    <LinearLayout
         android:id="@+id/map"
-        class="com.amap.api.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
 
 <!-- 搜索框 -->
     <RelativeLayout
