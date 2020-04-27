@@ -5,27 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.placesearch.adapter.InputTipsAdapter;
+import com.amap.placesearch.adapter.OnItemClickListener;
 import com.amap.placesearch.util.Constants;
 import com.amap.placesearch.util.ToastUtil;
 import com.hgy.poi4.MainActivity;
 import com.hgy.poi4.R;
-import androidx.appcompat.widget.SearchView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputTipsActivity extends Activity implements SearchView.OnQueryTextListener, Inputtips.InputtipsListener, OnItemClickListener, View.OnClickListener {
+public class InputTipsActivity extends Activity implements SearchView.OnQueryTextListener, Inputtips.InputtipsListener, View.OnClickListener {
     private SearchView mSearchView;// 搜索输入框
     private ImageView mBack; // 返回键
-    private ListView mInputListView; // 提示列表
+    private RecyclerView mInputListView; // 提示列表
     private List<Tip> mCurrentTipList; // 提示列表数据
     private InputTipsAdapter mIntipAdapter; // 列表适配器
 
@@ -33,11 +35,8 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_tips);
-
         initSearchView();
-
-        mInputListView = (ListView) findViewById(R.id.inputtip_list);
-        mInputListView.setOnItemClickListener(this);
+        mInputListView = (RecyclerView) findViewById(R.id.inputtip_list);
 
         mBack = (ImageView) findViewById(R.id.back);
         mBack.setOnClickListener(this);
@@ -79,25 +78,23 @@ public class InputTipsActivity extends Activity implements SearchView.OnQueryTex
             for (int i = 0; i < tipList.size(); i++) {
                 listString.add(tipList.get(i).getName());
             }
-            mIntipAdapter = new InputTipsAdapter(
-                    getApplicationContext(),
-                    mCurrentTipList);
+            mInputListView.setLayoutManager(new LinearLayoutManager(this));
+            mIntipAdapter = new InputTipsAdapter(getApplicationContext(), mCurrentTipList);
+            mIntipAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view) {
+                    int position = mInputListView.getChildAdapterPosition(view);
+                    Tip tip = mCurrentTipList.get(position);
+                    Log.d("hgy", "onItemClick: " + position + "," + tip);
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.EXTRA_TIP, tip);
+                    setResult(MainActivity.RESULT_CODE_INPUTTIPS, intent);
+                    finish();
+                }
+            });
             mInputListView.setAdapter(mIntipAdapter);
-            mIntipAdapter.notifyDataSetChanged();
         } else {
             ToastUtil.showerror(this, rCode);
-        }
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (mCurrentTipList != null) {
-            Tip tip = (Tip) adapterView.getItemAtPosition(i);
-            Intent intent = new Intent();
-            intent.putExtra(Constants.EXTRA_TIP, tip);
-            setResult(MainActivity.RESULT_CODE_INPUTTIPS, intent);
-            this.finish();
         }
     }
 
