@@ -3,7 +3,6 @@ package com.amap.placesearch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +18,7 @@ import com.amap.placesearch.util.Constants;
 import com.amap.placesearch.util.ToastUtil;
 import com.hgy.poi4.MainActivity;
 import com.hgy.poi4.R;
-
+import androidx.appcompat.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
